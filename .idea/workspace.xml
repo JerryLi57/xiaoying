@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3c665081-1079-4b3d-b808-238ae230351a" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1kj3XfZcFRPXX5TtpkZL3FAaDhm" />
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/xiaoying-comm/src/main/java/com/xiaoyingkeji/dto" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.xiaoyingkeji.utils.redis" />
+      <recent name="com.xiaoyingkeji.dto" />
+      <recent name="com.xiaoyingkeji.utils" />
+      <recent name="com.xiaoyingkeji.interceptors" />
+      <recent name="com.xiaoyingkeji" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\workspace\demo\xiaoying\xiaoying-comm\src\main\java\com\xiaoyingkeji\dto" />
+      <recent name="E:\workspace\demo\xiaoying\xiaoying-comm\src\main\resources" />
+      <recent name="E:\workspace\demo\xiaoying\xiaoying-comm\src\main\java\com\xiaoyingkeji\constant" />
+      <recent name="E:\workspace\demo\xiaoying\xiaoying-comm\src\main\java\com\xiaoyingkeji\exception" />
+      <recent name="E:\workspace\demo\xiaoying\xiaoying-comm\src\main\java\com\xiaoyingkeji\pool" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.Test">
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Test" />
+      <module name="xiaoying-comm" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CrmServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="xiaoying-comm" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.lolaage.crm.service.CrmServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3c665081-1079-4b3d-b808-238ae230351a" name="Default Changelist" comment="" />
+      <created>1606200214692</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1606200214692</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>

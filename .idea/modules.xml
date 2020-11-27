@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/code-generator/egc-code-generator.iml" filepath="$PROJECT_DIR$/code-generator/egc-code-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoxing.iml" filepath="$PROJECT_DIR$/xiaoxing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoying-comm/xiaoying-comm.iml" filepath="$PROJECT_DIR$/xiaoying-comm/xiaoying-comm.iml" />
+    </modules>
+  </component>
+</project>

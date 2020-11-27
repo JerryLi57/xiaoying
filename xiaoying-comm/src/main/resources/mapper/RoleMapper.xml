@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lolaage.crm.service.dao.mapper.RoleMapper">
+
+    <!-- 默认的DTO类 -->
+    <resultMap id="resultDto" type="com.lolaage.crm.service.dto.comm.RoleDto">
+        <result column="f_id" property="id"/>
+        <result column="f_name" property="name"/>
+        <result column="f_remark" property="remark"/>
+        <result column="f_invalid_time" property="invalidTime"/>
+        <result column="f_creater" property="creater"/>
+        <result column="f_pc_login" property="pcLogin"/>
+        <result column="f_role_type" property="roleType"/>
+        <result column="f_label_id" property="labelId"/>
+        <result column="f_parent_id" property="parentId"/>
+        <result column="f_order_num" property="orderNum"/>
+        <result column="f_is_admin" property="isAdmin"/>
+        <result column="f_category_id" property="categoryId"/>
+        <result column="f_isdeleted" property="isdeleted"/>
+        <result column="f_update_time" property="updateTime"/>
+        <result column="f_create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- 使用mybatis-plus 的 Wrapper 形式传参-->
+    <select id="listDtoPageByWrapper" resultMap="resultDto">
+        SELECT * FROM t_role
+        <if test="ew != null">
+            <!-- 这里不用动,只需按 mybatis-plus 的 Wrapper 形式传参即可 -->
+            ${ew.customSqlSegment}
+        </if>
+    </select>
+
+    <!-- 使用对象类型传参 -->
+    <select id="listDtoPageByObj" parameterType="com.lolaage.crm.service.dto.comm.UserDto" resultMap="resultDto">
+        SELECT a.*,b.f_username createName,(select count(1) from t_user_org_role where f_role_id=a.f_id) as userCount
+        FROM t_role a left join t_user b on b.f_id=a.f_creater where t.f_isdeleted=0
+        <if test="dto != null">
+            <!-- 这里写自己的条件拼装 -->
+            <if test="dto.name!=null and dto.name!=''">
+                and a.f_name like concat('%',#{dto.name},'%')
+            </if>
+        </if>
+    </select>
+
+
+
+    <resultMap id="authJsonMap" type="com.lolaage.crm.service.dto.response.AuthJson">
+
+    </resultMap>
+    <select id="getResourceByModuleIdAndLoginUserId" resultMap="authJsonMap">
+        select distinct f_code as code,f_id as id, f_name as name, f_module_id as parentId from t_resource r where f_module_id = #{moduleId}
+        <if test="loginUserId !=null">
+            and exists(select 1 from t_role_resource rr where rr.f_resource_id=r.f_id and
+            exists(select 1 from t_user_org_role ur where rr.f_role_id=ur.f_role_id and
+            ur.f_user_org_id in (select f_id from t_user_org where f_user_id=#{loginUserId})
+            ))
+        </if>
+    </select>
+</mapper>

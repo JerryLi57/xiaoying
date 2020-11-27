@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lolaage.crm.service.dao.mapper.UserMapper">
+
+    <!-- 默认的DTO类 -->
+    <resultMap id="resultDto" type="com.lolaage.crm.service.dto.comm.UserDto">
+        <result column="f_id" property="id"/>
+        <result column="f_username" property="username"/>
+        <result column="f_password" property="password"/>
+        <result column="f_name" property="name"/>
+        <result column="f_office_level" property="officeLevel"/>
+        <result column="f_offic_position" property="officPosition"/>
+        <result column="f_telephone" property="telephone"/>
+        <result column="f_mgc_phone" property="mgcPhone"/>
+        <result column="f_home_phone" property="homePhone"/>
+        <result column="f_office_phone" property="officePhone"/>
+        <result column="f_card_type" property="cardType"/>
+        <result column="f_card_no" property="cardNo"/>
+        <result column="f_gender" property="gender"/>
+        <result column="f_birthday" property="birthday"/>
+        <result column="f_nation" property="nation"/>
+        <result column="f_person_type" property="personType"/>
+        <result column="f_is_login" property="isLogin"/>
+        <result column="f_fax" property="fax"/>
+        <result column="f_email" property="email"/>
+        <result column="f_data_source" property="dataSource"/>
+        <result column="f_region" property="region"/>
+        <result column="f_company" property="company"/>
+        <result column="f_duty" property="duty"/>
+        <result column="f_remark" property="remark"/>
+        <result column="f_avatar" property="avatar"/>
+       <!-- <result column="f_terminal_type" property="terminalType"/>-->
+        <result column="f_server_ip" property="serverIp"/>
+        <result column="f_server_port" property="serverPort"/>
+        <result column="f_online_state" property="onlineState"/>
+        <result column="f_reg_type" property="regType"/>
+        <result column="f_device_type" property="deviceType"/>
+        <result column="f_is_enable" property="isEnable"/>
+        <result column="f_mac" property="mac"/>
+        <result column="f_open_id" property="openId"/>
+        <result column="f_union_id" property="unionId"/>
+        <result column="f_isdeleted" property="isdeleted"/>
+        <result column="f_update_time" property="updateTime"/>
+        <result column="f_create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- 使用mybatis-plus 的 Wrapper 形式传参-->
+    <select id="listDtoPageByWrapper" resultMap="resultDto">
+        SELECT * FROM t_user
+        <if test="ew != null">
+            <!-- 这里不用动,只需按 mybatis-plus 的 Wrapper 形式传参即可 -->
+            ${ew.customSqlSegment}
+        </if>
+    </select>
+
+    <!-- 使用对象类型传参 -->
+    <select id="listDtoPageByObj" parameterType="com.lolaage.crm.service.dto.response.UserViewDto" resultType="com.lolaage.crm.service.dto.response.UserViewDto">
+        SELECT u.f_id AS id,u.f_name AS name,u.f_telephone AS telephone, f_office_phone AS officePhone,o.f_id AS orgId,o.f_name AS orgName,
+        GROUP_CONCAT(r.f_id ORDER BY r.f_id) AS roleIds,GROUP_CONCAT(r.f_name ORDER BY r.f_id) AS roleNames,
+        uo.f_is_leader AS isLeader,u.f_gender AS gender,u.f_card_no AS cardNo
+        FROM t_user u
+        LEFT JOIN t_user_org uo ON uo.f_user_id=u.f_id
+        LEFT JOIN t_user_org_role uor ON uor.f_user_org_id=uo.f_id
+        LEFT JOIN t_org o ON o.f_id=uo.f_org_id
+        LEFT JOIN t_role r ON r.f_id=uor.f_role_id
+        WHERE uo.f_org_id=#{dto.orgId}
+        <if test="null != dto.name and dto.name != '' ">
+            AND u.f_name LIKE '%${dto.name}%'
+        </if>
+        <if test="null != dto.cardNo and dto.cardNo != '' ">
+            AND u.f_card_no LIKE '%${dto.cardNo}%'
+        </if>
+        <if test="null != dto.telephone">
+            AND u.f_telephone LIKE '%${dto.telephone}%'
+        </if>
+        AND u.f_isdeleted=0 AND o.f_isdeleted=0 AND u.f_id IS NOT NULL
+        GROUP BY u.f_id
+        ORDER BY u.f_id DESC
+    </select>
+
+    <!-- 使用对象类型传参 -->
+    <select id="listChildrenUsers" parameterType="com.lolaage.crm.service.dto.response.UserViewDto" resultType="com.lolaage.crm.service.dto.response.UserViewDto">
+        SELECT u.f_id AS id,u.f_name AS name,u.f_telephone AS telephone, f_office_phone AS officePhone,o.f_id AS orgId,o.f_name AS orgName,
+        GROUP_CONCAT(r.f_id ORDER BY r.f_id) AS roleIds,GROUP_CONCAT(r.f_name ORDER BY r.f_id) AS roleNames,
+        uo.f_is_leader AS isLeader,u.f_gender AS gender,u.f_card_no AS cardNo, uo.f_id AS userOrgId
+        FROM t_user u
+        LEFT JOIN t_user_org uo ON uo.f_user_id=u.f_id
+        LEFT JOIN t_org_relation_path orp ON orp.f_org_id=uo.f_org_id
+        LEFT JOIN t_user_org_role uor ON uor.f_user_org_id=uo.f_id
+        LEFT JOIN t_org o ON o.f_id=uo.f_org_id
+        LEFT JOIN t_role r ON r.f_id=uor.f_role_id
+        WHERE 1=1
+        <if test="null != dto.orgId and dto.orgId > 0 ">
+            and  FIND_IN_SET(#{dto.orgId},orp.f_path)
+        </if>
+
+        <if test="null != dto.name and dto.name != '' ">
+            AND u.f_name LIKE '%${dto.name}%'
+        </if>
+        AND u.f_isdeleted=0 AND o.f_isdeleted=0 AND u.f_id IS NOT NULL
+        GROUP BY u.f_id
+        ORDER BY u.f_id DESC
+    </select>
+
+
+    <!--查询机构下面全都的人员信息-->
+    <select id="listChildrenUserList" parameterType="com.lolaage.crm.service.dto.request.UserQueryDto" resultType="com.lolaage.crm.service.dto.comm.UserListDto">
+        SELECT u.f_id AS id,u.f_name AS name,u.f_telephone AS telephone, f_office_phone AS officePhone,o.f_id AS orgId,o.f_name AS orgName,
+        GROUP_CONCAT(r.f_id ORDER BY r.f_id) AS roleIds,GROUP_CONCAT(r.f_name ORDER BY r.f_id) AS roleNames,
+        uo.f_is_leader AS isLeader,u.f_gender AS gender,u.f_card_no AS cardNo,
+        TIMESTAMPDIFF(YEAR, f_birthday, CURDATE()) as age,u.f_duty as duty , uo.f_id as uoId
+        FROM t_user u
+        LEFT JOIN t_user_org uo ON uo.f_user_id=u.f_id
+        LEFT JOIN t_org_relation_path orp ON orp.f_org_id=uo.f_org_id
+        LEFT JOIN t_user_org_role uor ON uor.f_user_org_id=uo.f_id
+        LEFT JOIN t_org o ON o.f_id=uo.f_org_id
+        LEFT JOIN t_role r ON r.f_id=uor.f_role_id
+        WHERE FIND_IN_SET(#{dto.orgId},orp.f_path)
+        <if test="null != dto.name and dto.name != '' ">
+            AND u.f_name LIKE '%${dto.name}%'
+        </if>
+        AND u.f_isdeleted=0 AND o.f_isdeleted=0 AND u.f_id IS NOT NULL
+        GROUP BY u.f_id
+        ORDER BY u.f_id DESC
+    </select>
+
+    <select id="getViewUserById" parameterType="java.lang.Long" resultType="com.lolaage.crm.service.dto.response.UserViewDto">
+        SELECT u.f_id AS id,u.f_name AS name,u.f_telephone AS telephone, f_office_phone AS officePhone,o.f_id AS orgId,o.f_name AS orgName,
+        GROUP_CONCAT(r.f_id ORDER BY r.f_id) AS roleIds,GROUP_CONCAT(r.f_name ORDER BY r.f_id) AS roleNames,
+        uo.f_is_leader AS isLeader,u.f_gender AS gender,u.f_card_no AS cardNo,DATE_FORMAT(u.f_birthday, '%Y/%m/%d') AS birthday,u.f_avatar as avatar
+        FROM t_user u
+        LEFT JOIN t_user_org uo ON uo.f_user_id=u.f_id
+        LEFT JOIN t_user_org_role uor ON uor.f_user_org_id=uo.f_id
+        LEFT JOIN t_org o ON o.f_id=uo.f_org_id
+        LEFT JOIN t_role r ON r.f_id=uor.f_role_id
+        WHERE u.f_id = #{userId}
+        AND u.f_isdeleted=0 AND o.f_isdeleted=0 AND u.f_id IS NOT NULL
+        GROUP BY u.f_id
+        ORDER BY u.f_id DESC
+    </select>
+
+    <!-- 查询各个组织总人数 -->
+    <select id="queryCountByOrg" parameterType="java.lang.Long" resultType="com.lolaage.crm.service.dto.response.OrgUserCountTreeDto">
+        SELECT o.f_id AS id,o.f_parent_id AS parentId,o.f_name AS name,COUNT(uo.f_user_id) AS userCount
+        FROM t_org o
+        LEFT JOIN t_org_relation_path p ON p.f_org_id=o.f_id
+        LEFT JOIN t_user_org uo ON uo.f_org_id=o.f_id
+        WHERE o.f_isdeleted=0 AND FIND_IN_SET(#{topOrgId,jdbcType=VARCHAR}, p.f_path)
+        GROUP BY o.f_id
+        ORDER BY o.f_id
+    </select>
+
+    <!-- 根据账号id和组织id查询有效的用户记录 -->
+    <select id="getUserInfoByOrgId" resultType="com.lolaage.crm.service.model.User">
+        SELECT u.f_id AS id,u.f_username AS username FROM t_user u
+        LEFT JOIN t_user_org uo ON uo.f_user_id=u.f_id
+        WHERE u.f_id=#{userId} AND uo.f_org_id=#{orgId} AND u.f_isdeleted=0
+        LIMIT 1
+    </select>
+
+    <!-- 批量删除用户 -->
+    <update id="delBatch">
+        UPDATE t_user SET f_isdeleted=1 WHERE f_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </update>
+
+    <select id="getOrgChildrenUserCount" parameterType="java.lang.Long" resultType="com.lolaage.crm.service.dto.response.OrgUserCountTreeDto">
+        SELECT o.f_id AS id,o.f_parent_id AS parentId,o.f_name AS name,COUNT(uo.f_user_id) AS userCount,
+        (select count(1) from t_org where f_parent_id=o.f_id AND f_isdeleted=0) as childCount
+        FROM t_org o
+        LEFT JOIN t_user_org uo ON uo.f_org_id=o.f_id
+        WHERE (o.f_id=#{parentId} OR o.f_parent_id=#{parentId}) AND o.f_isdeleted=0
+        GROUP BY o.f_id
+        ORDER BY o.f_id
+    </select>
+
+    <!-- 人员管理，编辑界面查询用户详情 -->
+    <select id="getOneView" resultType="com.lolaage.crm.service.dto.response.UserViewDto">
+        SELECT u.f_id AS id,u.f_name AS name,u.f_telephone AS telephone, f_office_phone AS officePhone,o.f_id AS orgId,o.f_name AS orgName,
+        GROUP_CONCAT(r.f_id ORDER BY r.f_id) AS roleIds,GROUP_CONCAT(r.f_name ORDER BY r.f_id) AS roleNames,
+        uo.f_is_leader AS isLeader,u.f_gender AS gender,u.f_card_no AS cardNo,DATE_FORMAT(u.f_birthday, '%Y/%m/%d') AS birthday,u.f_avatar AS avatar
+        FROM t_user u
+        LEFT JOIN t_user_org uo ON uo.f_user_id=u.f_id
+        LEFT JOIN t_user_org_role uor ON uor.f_user_org_id=uo.f_id
+        LEFT JOIN t_org o ON o.f_id=uo.f_org_id
+        LEFT JOIN t_role r ON r.f_id=uor.f_role_id
+        WHERE u.f_id=#{userId}
+    </select>
+	
+	<select id="getUserInfoByUserOrgId" resultType="com.lolaage.crm.service.dto.comm.UserInfoDto">
+			select 
+				t1.f_id as id,
+				t1.f_name as name,
+				t1.f_gender as gender,
+				t1.f_card_type as cardType,
+				t1.f_card_no as cardNo,
+				t1.f_nation as nation,
+				t1.f_birthday as birthday,
+				t1.f_office_phone as officePhone,
+				t1.f_mgc_phone as mgcPhone,
+				t3.f_name as orgName,
+				t1.f_person_type as personType,
+				t1.f_is_login as isLogin,
+				t1.f_office_level as officeLevel,
+				t1.f_offic_position as officPosition,
+				t1.f_fax as fax,
+				t1.f_email as email,
+				t1.f_telephone as telephone,
+				t1.f_home_phone as homePhone,
+				t1.f_data_source as dataSource,
+				t1.f_duty as duty 
+			from t_user t1 
+			left join t_user_org t2 on t1.f_id = t2.f_user_id 
+			left join t_org t3 on t2.f_org_id = t3.f_id 
+			where t1.f_isdeleted = 0 and t3.f_isdeleted = 0 
+			and t2.f_id = #{userOrgId} 
+	</select>
+	
+	<select id="getUserListByIds" resultType="com.lolaage.crm.service.dto.comm.UserSimpleDto">
+		select 
+			f_id as id,
+			f_name as username 
+		from t_user where f_id in 
+		<foreach collection="list" item="id" separator="," open="(" close=")">
+			#{id}
+		</foreach>
+	</select>
+
+    <select id="getUserInfoListByIds" resultType="com.lolaage.crm.service.dto.comm.UserInfoSimpleDto">
+        select
+        f_id as id,
+        f_name as username,
+        f_telephone as telephone,
+        f_email as email
+        from t_user where f_id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

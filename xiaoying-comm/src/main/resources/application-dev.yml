@@ -1,0 +1,81 @@
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      db-type: mysql
+      field-strategy: not_null
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      table-prefix: t_
+      table-underline: true
+  mapper-locations: classpath:/mapper/*.xml
+server:
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  aop:
+    auto: true
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://47.112.234.0:53301/lolaage_crm?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: root
+    password: uWXf87plmQGz8zMM
+    # 连接池配置
+    druid:
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      filters: stat
+      initial-size: 5
+      maxActive: 20
+      maxEvictableIdleTimeMillis: 25200000
+      maxPoolPreparedStatementPerConnectionSize: 20
+      maxWait: 60000
+      min-idle: 5
+      minEvictableIdleTimeMillis: 300000
+      poolPreparedStatements: true
+      testOnBorrow: false
+      testOnReturn: false
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 60000
+      validationQuery: SELECT 1 FROM DUAL
+  #设置字符编码
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  #redis配置******
+  redis:
+    database: 0
+    host: 47.112.234.0
+    password: AhspHJ2l0ychcves
+    port: 47000
+    timeout: 5000
+
+# 忘记密码找回地址配置
+forgetPassword:
+  url: http://localhost:8188/crm/#/forgotPassword?token=
+
+# 日志配置文件
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+
+# 邮件信息配置
+mail:
+  from: administrator@lolaage.com
+  host: smtp.ym.163.com
+  mailSubject: 会议提醒
+  nickName: 系统
+  password: lolaage_2020
+  port: 994
+  username: administrator@lolaage.com
+
+# 文件上传地址
+upload:
+  path: ./upload/

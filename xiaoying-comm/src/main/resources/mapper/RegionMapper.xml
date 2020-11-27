@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lolaage.crm.service.dao.mapper.RegionMapper">
+
+    <!-- 默认的DTO类 -->
+    <resultMap id="resultDto" type="com.lolaage.crm.service.dto.comm.RegionDto">
+        <result column="f_id" property="id"/>
+        <result column="f_parent_id" property="parentId"/>
+        <result column="f_code" property="code"/>
+        <result column="f_name" property="name"/>
+        <result column="f_introduce" property="introduce"/>
+        <result column="f_remark" property="remark"/>
+        <result column="f_isdeleted" property="isdeleted"/>
+        <result column="f_update_time" property="updateTime"/>
+        <result column="f_create_time" property="createTime"/>
+    </resultMap>
+
+    <resultMap id="resultChildDto" type="com.lolaage.crm.service.dto.comm.CacheRegion">
+        <result column="f_id" property="id"/>
+        <result column="f_name" property="name"/>
+        <result column="f_parent_id" property="parentId"/>
+        <association property="childs" select="com.lolaage.crm.service.dao.mapper.RegionMapper.findByParntId" column="f_id"></association>
+    </resultMap>
+
+    <select id="findByParntId" resultMap="resultChildDto">
+        select f_id ,f_parent_id ,f_name  from t_region where f_parent_id=#{parentId}
+    </select>
+
+    <!-- 使用mybatis-plus 的 Wrapper 形式传参-->
+    <select id="listDtoPageByWrapper" resultMap="resultDto">
+        SELECT * FROM t_region
+        <if test="ew != null">
+            <!-- 这里不用动,只需按 mybatis-plus 的 Wrapper 形式传参即可 -->
+            ${ew.customSqlSegment}
+        </if>
+    </select>
+
+    <!-- 使用对象类型传参 -->
+    <select id="listDtoPageByObj" parameterType="com.lolaage.crm.service.dto.comm.UserDto" resultMap="resultDto">
+        SELECT * FROM t_region where t.f_isdeleted=0
+        <if test="dto != null">
+            <!-- 这里写自己的条件拼装 -->
+
+        </if>
+    </select>
+
+    <select id="select" resultType="com.lolaage.crm.service.dto.comm.RegionDto">
+        select
+        f_id id,
+        f_parent_id parentId,
+        f_name name,
+        f_code code,
+        f_type type,
+        f_area_positions areaPositions
+        from t_region t
+        <where>
+            <if test="policeArea.name != null and policeArea.name != ''">
+                and t.f_name like concat('%', #{policeArea.name},'%')
+            </if>
+            <if test="policeArea.id != null">
+                and t.f_id = #{policeArea.id}
+            </if>
+            <if test="policeArea.parentId != null">
+                and t.f_parent_id = #{policeArea.parentId}
+            </if>
+            <if test="policeArea.type != null and policeArea.type != ''">
+                and t.f_type = #{policeArea.type}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByName" parameterType="java.lang.String" resultType="com.lolaage.crm.service.dto.comm.RegionDto">
+        SELECT f_id AS id,f_name AS name FROM t_region WHERE f_name LIKE '%${regionName}%' AND f_isdeleted=0
+    </select>
+
+</mapper>

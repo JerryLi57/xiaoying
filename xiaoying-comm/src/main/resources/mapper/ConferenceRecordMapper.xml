@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lolaage.crm.service.dao.mapper.ConferenceRecordMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="baseColumnList">
+        t.f_id AS id,
+        t.f_room_id AS roomId,
+        t.f_purpose_id AS purposeId,
+        t.f_start_time AS startTime,
+        t.f_end_time AS endTime,
+        t.f_status AS status,
+        t.f_file_id AS fileId,
+        t.f_isdeleted AS isdeleted,
+        t.f_create_id AS createId,
+        t.f_update_time AS updateTime,
+        t.f_create_time AS createTime
+    </sql>
+
+
+    <!-- 使用对象类型传参 -->
+    <select id="listPageByDto" parameterType="com.lolaage.crm.service.dto.request.ConferenceRecordQueryDto"
+            resultType="com.lolaage.crm.service.dto.response.ConferenceRecordListDto">
+        SELECT
+        <include refid="baseColumnList"/>,
+        t1.f_name as `createName`,
+        t2.f_name as `roomName`,
+        t3.f_name as `purpose`
+        FROM t_conference_record t
+        LEFT JOIN t_user t1 ON t1.f_id = t.f_create_id
+        LEFT JOIN t_conference_room t2 ON t2.f_id = t.f_room_id
+        LEFT JOIN t_conference_purpose t3 ON t.f_purpose_id = t3.f_id
+        where t.f_isdeleted = 0 and t.f_status = 1
+        <if test="dto != null">
+            <!-- 这里写自己的条件拼装 -->
+            <if test="dto.createId !=null and dto.createId > 0">
+                and t.f_create_id = #{dto.createId}
+            </if>
+            <if test="dto.startDate != null">
+                and t.f_start_time >= #{dto.startDate}
+            </if>
+            <if test="dto.endDate != null">
+                and t.f_start_time &lt;= #{dto.endDate}
+            </if>
+            <if test="dto.roomId !=null">
+                and t.f_room_id = #{dto.roomId}
+            </if>
+        </if>
+        ORDER BY t.f_create_time DESC
+    </select>
+
+
+    <select id="listAllByDto" parameterType="com.lolaage.crm.service.dto.request.ConferenceRecordQueryDto"
+            resultType="com.lolaage.crm.service.dto.response.ConferenceRecordListDto">
+        SELECT
+        <include refid="baseColumnList"/>,
+        t1.f_name as `createName`,
+        t2.f_name as `roomName`,
+        t3.f_name as `purpose`
+        FROM t_conference_record t
+        LEFT JOIN t_user t1 ON t1.f_id = t.f_create_id
+        LEFT JOIN t_conference_room t2 ON t2.f_id = t.f_room_id
+        LEFT JOIN t_conference_purpose t3 ON t.f_purpose_id = t3.f_id
+        where t.f_isdeleted = 0 and t.f_status = 1
+        <if test="dto != null">
+            <!-- 这里写自己的条件拼装 -->
+            <if test="dto.createId !=null and dto.createId > 0">
+                and t.f_create_id = #{dto.createId}
+            </if>
+            <if test="dto.startDate != null">
+                and t.f_start_time >= #{dto.startDate}
+            </if>
+            <if test="dto.endDate != null">
+                and t.f_start_time &lt;= #{dto.endDate}
+            </if>
+            <if test="dto.roomId !=null">
+                and t.f_room_id = #{dto.roomId}
+            </if>
+        </if>
+        ORDER BY t.f_update_time DESC
+    </select>
+
+
+    <select id="getDetail" resultType="com.lolaage.crm.service.dto.response.ConferenceRecordDetailDto">
+        SELECT
+        <include refid="baseColumnList"/>,
+        t1.f_name as `createName`,
+        t2.f_name as `roomName`,
+        t3.f_name as `purpose`
+        FROM t_conference_record t
+        LEFT JOIN t_user t1 ON t1.f_id = t.f_create_id
+        LEFT JOIN t_conference_room t2 ON t2.f_id = t.f_room_id
+        LEFT JOIN t_conference_purpose t3 ON t.f_purpose_id = t3.f_id
+        where t.f_isdeleted = 0 and t.f_id =#{id}
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.lolaage.crm.service.dto.request.ConferenceRecordEditDto">
+        select count(*) FROM t_conference_record t
+        where t.f_isdeleted = 0 and t.f_status = 1
+        and (
+        (t.f_start_time >= #{dto.startTime} and t.f_start_time &lt; #{dto.endTime})
+        OR (t.f_start_time &lt;= #{dto.startTime} AND t.f_end_time >= #{dto.endTime})
+        OR (t.f_end_time > #{dto.startTime} AND t.f_end_time &lt;= #{dto.endTime})
+        )
+        <if test="dto.roomId !=null">
+            and t.f_room_id = #{dto.roomId}
+        </if>
+        <if test="dto.Id !=null">
+            and t.f_id != #{dto.id}
+        </if>
+    </select>
+
+
+</mapper>

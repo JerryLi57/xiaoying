@@ -1,0 +1,32 @@
+server:
+  port: 8168
+spring:
+  application:
+    name: xiaoying-comm
+  profiles:
+    active: '@package.environment@'
+
+#文件上传大小配置
+servlet:
+  multipart:
+    enabled: true
+    max-file-size: 500MB
+    max-request-size: 500MB
+
+#权限拦截配置
+gateway:
+  shouldSkipButNeedLoginUrls:
+    - /module/getLoginModule
+    - /user/currentUser
+    - /category/listByParentId
+  shouldSkipUrls:
+    - /login/**
+    - /swagger-ui.html
+    - /v2/api-docs/**
+    - /f/u1
+    - /f/dn1
+    - /f/getByIds
+    - /equipment/websocket/get_online_all
+    - /scan/uri
+
+

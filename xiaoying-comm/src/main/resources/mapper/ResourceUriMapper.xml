@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lolaage.crm.service.dao.mapper.ResourceUriMapper">
+
+    <!-- 默认的DTO类 -->
+    <resultMap id="resultDto" type="com.lolaage.crm.service.dto.comm.ResourceUriDto">
+        <result column="f_id" property="id"/>
+        <result column="f_resource_id" property="resourceId"/>
+        <result column="f_name" property="name"/>
+        <result column="f_uri" property="uri"/>
+        <result column="f_remark" property="remark"/>
+        <result column="f_create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- 使用对象类型传参 -->
+    <select id="listPageByDto" parameterType="com.lolaage.crm.service.dto.comm.ResourceUriDto" resultMap="resultDto">
+        SELECT * FROM t_resource_uri where t.f_isdeleted=0
+        <if test="dto != null">
+            <!-- 这里写自己的条件拼装 -->
+
+        </if>
+    </select>
+
+</mapper>

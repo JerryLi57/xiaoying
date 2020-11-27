@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lolaage.crm.service.dao.mapper.ResourceMapper">
+
+    <!-- 默认的DTO类 -->
+    <resultMap id="resultDto" type="com.lolaage.crm.service.dto.comm.ResourceDto">
+        <result column="f_id" property="id"/>
+        <result column="f_module_id" property="moduleId"/>
+        <result column="f_name" property="name"/>
+        <result column="f_code" property="code"/>
+        <result column="f_uri" property="uri"/>
+        <result column="f_ismenu" property="ismenu"/>
+        <result column="f_order_num" property="orderNum"/>
+        <result column="f_creater" property="creater"/>
+        <result column="f_invalid_time" property="invalidTime"/>
+        <result column="f_isdeleted" property="isdeleted"/>
+        <result column="f_update_time" property="updateTime"/>
+        <result column="f_create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- 使用mybatis-plus 的 Wrapper 形式传参-->
+    <select id="listDtoPageByWrapper" resultMap="resultDto">
+        SELECT * FROM t_resource
+        <if test="ew != null">
+            <!-- 这里不用动,只需按 mybatis-plus 的 Wrapper 形式传参即可 -->
+            ${ew.customSqlSegment}
+        </if>
+    </select>
+
+    <!-- 使用对象类型传参 -->
+    <select id="listDtoPageByObj" parameterType="com.lolaage.crm.service.dto.comm.UserDto" resultMap="resultDto">
+        SELECT * FROM t_resource where t.f_isdeleted=0
+        <if test="dto != null">
+            <!-- 这里写自己的条件拼装 -->
+
+        </if>
+    </select>
+
+    <select id="getLoginResource" resultType="java.lang.String">
+        select f_uri from t_resource where f_id in (select f_resource_id from t_role_resource where f_role_id in (
+        select f_role_id from t_user_org_role where f_user_org_id in (select f_id from t_user_org where f_org_id =#{orgId} and f_user_id =#{userId} )
+        )) and f_isdeleted=0
+        <if test="moduleId!=null">
+            and f_module_id=#{moduleId}
+        </if>
+    </select>
+
+    <select id="listLoginResourceIds" resultType="java.lang.Long">
+        select f_id from t_resource where f_id in (select f_resource_id from t_role_resource where f_role_id in (
+        select f_role_id from t_user_org_role where f_user_org_id in (select f_id from t_user_org where f_org_id =#{orgId} and f_user_id =#{userId} )
+        )) and f_isdeleted=0
+    </select>
+
+    <select id="listLoginAuths" resultType="com.lolaage.crm.service.dto.response.AuthValidDto">
+        SELECT t1.f_module_id mid, t2.f_uri uri
+        FROM t_resource t1
+        LEFT JOIN t_resource_uri t2 ON t1.f_id = t2.f_resource_id,
+        (SELECT f_resource_id FROM t_role_resource WHERE
+            f_role_id IN ( SELECT f_role_id FROM t_user_org_role WHERE
+                f_user_org_id IN ( SELECT f_id FROM t_user_org WHERE f_org_id =#{orgId} and f_user_id =#{userId} ) ) ) t3
+        WHERE t1.f_id = t3.f_resource_id AND t2.f_uri is not null
+    </select>
+
+    <select id="getByModuldId" resultMap="resultDto">
+        SELECT a.*,GROUP_CONCAT(b.f_uri) AS urls
+        FROM t_resource a
+        LEFT JOIN t_resource_uri b ON b.f_resource_id=a.f_id
+        WHERE a.f_module_id =#{moduldId}
+        GROUP BY a.f_id
+    </select>
+
+    <select id="getResourcesCodes" resultType="java.lang.String">
+        select ifnull(group_concat(a.f_code), ',') codes from t_resource a left join
+        t_role_resource b on b.f_resource_id=a.f_id left join
+        t_user_org_role c on c.f_role_id=b.f_role_id left join
+        t_user_org d on d.f_id=c.f_user_org_id
+        where a.f_module_id=#{moduleId} and d.f_user_id=#{user.id} and d.f_org_id=#{user.orgid}
+    </select>
+</mapper>

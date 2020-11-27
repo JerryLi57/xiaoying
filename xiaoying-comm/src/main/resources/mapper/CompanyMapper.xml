@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lolaage.crm.service.dao.mapper.CompanyMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="baseColumnList">
+        t.f_id AS id,
+        t.f_type_id AS typeId,
+        t.f_address AS address,
+        t.f_contanct AS contanct,
+        t.f_telephone AS telephone,
+        t.f_company_name AS companyName,
+        t.f_owner_name AS ownerName,
+        t.f_company_phone AS companyPhone,
+        t.f_license AS license,
+        t.f_remark AS remark,
+        t.f_founded_date AS foundedDate,
+        t.f_update_time AS updateTime,
+        t.f_create_time AS createTime
+    </sql>
+
+    <!-- 使用对象类型传参 -->
+    <select id="listPageByDto" parameterType="com.lolaage.crm.service.dto.request.CompanyQueryDto" resultType="com.lolaage.crm.service.dto.response.CompanyListDto">
+        SELECT <include refid="baseColumnList" />
+        , t1.f_name AS orgName, (SELECT f_name FROM t_company_type WHERE f_id = t.f_type_id ) AS typeDesc
+        FROM t_company t LEFT JOIN t_org t1 ON t.f_id = t1.f_company_id
+        WHERE t1.f_isdeleted=0
+        <if test="dto != null">
+            <!-- 这里写自己的条件拼装 -->
+            <if test="dto.companyName!=null and dto.companyName!=''">
+                AND t.f_company_name like concat("%",#{dto.companyName},"%")
+            </if>
+            <if test="dto.type!=null and dto.type>0">
+                AND t1.f_type = #{dto.type}
+            </if>
+        </if>
+        ORDER BY t.f_update_time DESC
+    </select>
+
+</mapper>
