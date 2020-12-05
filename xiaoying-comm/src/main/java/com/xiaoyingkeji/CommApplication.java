@@ -10,7 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @EnableSwagger2
 @EnableTransactionManagement
-@SpringBootApplication(scanBasePackages = {"com.lolaage.crm.service"})
+@SpringBootApplication(scanBasePackages = {"com.xiaoyingkeji"})
 public class CommApplication {
 
     public static void main(String[] args) {

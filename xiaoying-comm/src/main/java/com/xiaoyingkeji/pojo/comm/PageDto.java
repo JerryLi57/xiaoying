@@ -1,4 +1,4 @@
-package com.xiaoyingkeji.dto.page;
+package com.xiaoyingkeji.pojo.comm;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,7 +1,6 @@
-package com.xiaoyingkeji.dto;
+package com.xiaoyingkeji.pojo.comm;
 
 import com.xiaoyingkeji.constant.ErrorEnum;
-import com.xiaoyingkeji.dto.page.PageDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

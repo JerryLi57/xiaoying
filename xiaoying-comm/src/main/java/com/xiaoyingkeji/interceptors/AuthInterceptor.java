@@ -1,15 +1,15 @@
 package com.xiaoyingkeji.interceptors;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.xiaoyingkeji.config.NotAuthUrlConfig;
 import com.xiaoyingkeji.constant.ErrorEnum;
 import com.xiaoyingkeji.constant.RedisKeys;
-import com.xiaoyingkeji.dto.DataResult;
-import com.xiaoyingkeji.dto.TokenUser;
+import com.xiaoyingkeji.pojo.comm.DataResult;
+import com.xiaoyingkeji.pojo.comm.TokenUser;
 import com.xiaoyingkeji.utils.JwtTokenUtil;
 import com.xiaoyingkeji.utils.redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

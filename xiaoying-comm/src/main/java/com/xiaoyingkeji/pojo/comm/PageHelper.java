@@ -1,4 +1,4 @@
-package com.xiaoyingkeji.dto.page;
+package com.xiaoyingkeji.pojo.comm;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 

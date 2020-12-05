@@ -3,7 +3,7 @@ package com.xiaoyingkeji.utils;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xiaoyingkeji.constant.ErrorEnum;
-import com.xiaoyingkeji.dto.TokenUser;
+import com.xiaoyingkeji.pojo.comm.TokenUser;
 import com.xiaoyingkeji.exception.JwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

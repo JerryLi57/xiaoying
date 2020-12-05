@@ -1,4 +1,4 @@
-package com.xiaoyingkeji.dto;
+package com.xiaoyingkeji.pojo.comm;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

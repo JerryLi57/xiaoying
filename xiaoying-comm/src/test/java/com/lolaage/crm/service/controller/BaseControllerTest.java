@@ -1,6 +1,6 @@
 package com.lolaage.crm.service.controller;
 
-import com.lolaage.crm.service.CrmServiceApplication;
+import com.xiaoyingkeji.CommApplication;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
  * @date: 2020-03-18 10:24
  **/
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CrmServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = CommApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class BaseControllerTest {
 
