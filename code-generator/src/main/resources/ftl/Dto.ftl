@@ -1,4 +1,4 @@
-package com.lolaage.crm.${ModuleName}.response.dto;
+package com.xiaoyingkeji.${ModuleName}.pojo.dto;
 
 <#assign hasdatetime=0>
 <#assign hasdate=0>

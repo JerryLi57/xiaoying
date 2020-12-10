@@ -1,9 +1,10 @@
-package com.lolaage.crm.${ModuleName}.dao.mapper;
+package com.xiaoyingkeji.${ModuleName}.dao.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lolaage.crm.${ModuleName}.dto.request.${ModelName}QueryDto;
-import com.lolaage.crm.${ModuleName}.dto.response.${ModelName}ListDto;
-import com.lolaage.crm.${ModuleName}.model.${ModelName};
+import com.xiaoyingkeji.comm.dao.mapper.SuperMapper;
+import com.xiaoyingkeji.${ModuleName}.pojo.dto.${ModelName}QueryDto;
+import com.xiaoyingkeji.${ModuleName}.pojo.vo.${ModelName}ListVo;
+import com.xiaoyingkeji.${ModuleName}.pojo.model.${ModelName};
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,6 @@ import org.springframework.stereotype.Component;
 @Component("${ModelNameLower}Mapper")
 public interface ${ModelName}Mapper extends SuperMapper<${ModelName}> {
 
-    IPage<${ModelName}ListDto> listPageByDto(IPage<${ModelName}> page, @Param("dto") ${ModelName}QueryDto ${ModelNameLower}Dto);
+    IPage<${ModelName}ListVo> listPageByDto(IPage<${ModelName}> page, @Param("dto") ${ModelName}QueryDto ${ModelNameLower}Dto);
 
 }

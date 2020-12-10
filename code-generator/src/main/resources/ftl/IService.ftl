@@ -1,11 +1,12 @@
-package com.lolaage.crm.${ModuleName}.service.impl;
+package com.xiaoyingkeji.${ModuleName}.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lolaage.crm.${ModuleName}.dto.request.${ModelName}EditDto;
-import com.lolaage.crm.${ModuleName}.dto.request.${ModelName}QueryDto;
-import com.lolaage.crm.${ModuleName}.dto.response.${ModelName}ListDto;
-import com.lolaage.crm.${ModuleName}.dto.response.${ModelName}DetailDto;
-import com.lolaage.crm.${ModuleName}.model.${ModelName};
+import com.xiaoyingkeji.comm.service.IBaseService;
+import com.xiaoyingkeji.${ModuleName}.pojo.dto.${ModelName}EditDto;
+import com.xiaoyingkeji.${ModuleName}.pojo.dto.${ModelName}QueryDto;
+import com.xiaoyingkeji.${ModuleName}.pojo.vo.${ModelName}ListVo;
+import com.xiaoyingkeji.${ModuleName}.pojo.vo.${ModelName}DetailVo;
+import com.xiaoyingkeji.${ModuleName}.pojo.model.${ModelName};
 
 /**
  * @description: ${ModuleName}.${ModelName} 相关的服务接口类
@@ -16,15 +17,13 @@ public interface I${ModelName}Service extends IBaseService<${ModelName}> {
 
     /**
      * 分页查询获取列表数据
-     *
      * @param queryDto
      * @return
      */
-    IPage<${ModelName}ListDto> listPageByDto(${ModelName}QueryDto queryDto);
+    IPage<${ModelName}ListVo> listPageByDto(${ModelName}QueryDto queryDto);
 
     /**
      * 保存
-     *
      * @param dto
      * @return
      */
@@ -32,7 +31,6 @@ public interface I${ModelName}Service extends IBaseService<${ModelName}> {
 
     /**
      * 编辑
-     *
      * @param dto
      * @return
      */
@@ -40,16 +38,14 @@ public interface I${ModelName}Service extends IBaseService<${ModelName}> {
 
     /**
      * 删除
-     *
      * @param id
      */
     void del(Long id);
 
     /**
      * 根据ID获取详情
-     *
      * @param id
      * @return
      */
-    ${ModelName}DetailDto getDetail(Long id);
+    ${ModelName}DetailVo getDetail(Long id);
 }

@@ -1,20 +1,20 @@
-package com.lolaage.crm.${ModuleName}.service.impl;
+package com.xiaoyingkeji.${ModuleName}.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lolaage.crm.service.aspect.UpdateCheck;
-import com.lolaage.crm.service.constant.ErrorEnum;
-import com.lolaage.crm.service.exception.ServiceException;
-import com.lolaage.crm.${ModuleName}.dao.mapper.${ModelName}Mapper;
-import com.lolaage.crm.${ModuleName}.dto.request.${ModelName}EditDto;
-import com.lolaage.crm.${ModuleName}.dto.request.${ModelName}QueryDto;
-import com.lolaage.crm.${ModuleName}.dto.response.${ModelName}DetailDto;
-import com.lolaage.crm.${ModuleName}.dto.response.${ModelName}ListDto;
-import com.lolaage.crm.${ModuleName}.model.${ModelName};
-import com.lolaage.crm.${ModuleName}.service.I${ModelName}Service;
-import com.lolaage.crm.service.utils.SimpleBeanUtils;
+import com.xiaoyingkeji.comm.constant.ErrorEnum;
+import com.xiaoyingkeji.comm.exception.ServiceException;
+import com.xiaoyingkeji.comm.service.impl.BaseServiceImpl;
+import com.xiaoyingkeji.comm.utils.SimpleBeanUtils;
+import com.xiaoyingkeji.${ModuleName}.dao.mapper.${ModelName}Mapper;
+import com.xiaoyingkeji.${ModuleName}.pojo.dto.${ModelName}EditDto;
+import com.xiaoyingkeji.${ModuleName}.pojo.dto.${ModelName}QueryDto;
+import com.xiaoyingkeji.${ModuleName}.pojo.model.${ModelName};
+import com.xiaoyingkeji.${ModuleName}.pojo.vo.${ModelName}DetailVo;
+import com.xiaoyingkeji.${ModuleName}.pojo.vo.${ModelName}ListVo;
+import com.xiaoyingkeji.${ModuleName}.service.I${ModelName}Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +31,7 @@ public class ${ModelName}ServiceImpl extends BaseServiceImpl<${ModelName}Mapper,
     private ${ModelName}Mapper ${ModelNameLower}Mapper;
 
     @Override
-    public IPage<${ModelName}ListDto> listPageByDto(${ModelName}QueryDto queryDto) {
+    public IPage<${ModelName}ListVo> listPageByDto(${ModelName}QueryDto queryDto) {
         Page<${ModelName}> page = new Page(queryDto.getCurrentPage(), queryDto.getPageSize(), true);
         return ${ModelNameLower}Mapper.listPageByDto(page, queryDto);
     }
@@ -45,7 +45,6 @@ public class ${ModelName}ServiceImpl extends BaseServiceImpl<${ModelName}Mapper,
     }
 
     @Override
-    @UpdateCheck(clasz = "com.lolaage.crm.${ModuleName}.model.${ModelName}")
     @Transactional(rollbackFor = {Exception.class})
     public void edit(${ModelName}EditDto dto) {
         ${ModelName} entity = SimpleBeanUtils.autoFill(dto, ${ModelName}.class);
@@ -61,14 +60,14 @@ public class ${ModelName}ServiceImpl extends BaseServiceImpl<${ModelName}Mapper,
     }
 
     @Override
-    public ${ModelName}DetailDto getDetail(Long id) {
+    public ${ModelName}DetailVo getDetail(Long id) {
         LambdaQueryWrapper<${ModelName}> lqw = new LambdaQueryWrapper<>();
         lqw.eq(${ModelName}::getId, id).eq(${ModelName}::getIsdeleted, false);
         ${ModelName} entity = ${ModelNameLower}Mapper.selectOne(lqw);
         if (null == entity) {
             throw new ServiceException(ErrorEnum.DATA_NOT_EXISTS);
         }
-        ${ModelName}DetailDto dto = SimpleBeanUtils.autoFill(entity, ${ModelName}DetailDto.class);
+        ${ModelName}DetailVo dto = SimpleBeanUtils.autoFill(entity, ${ModelName}DetailVo.class);
         return dto;
     }
 }

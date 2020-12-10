@@ -1,5 +1,6 @@
-package com.lolaage.crm.${ModuleName}.controller;
+package com.xiaoyingkeji.${ModuleName}.controller;
 
+import com.xiaoyingkeji.controller.BaseControllerTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.http.MediaType;

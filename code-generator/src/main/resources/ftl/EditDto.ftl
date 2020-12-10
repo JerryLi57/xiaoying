@@ -1,4 +1,4 @@
-package com.lolaage.crm.${ModuleName}.request.dto;
+package com.xiaoyingkeji.${ModuleName}.pojo.dto;
 
 <#assign hasdatetime=0>
 <#assign hasdate=0>
@@ -16,8 +16,8 @@ package com.lolaage.crm.${ModuleName}.request.dto;
 <#if hasjson==1>
 import com.fasterxml.jackson.annotation.JsonFormat;
 </#if>
-import com.lolaage.crm.service.valid.group.AddGroup;
-import com.lolaage.crm.service.valid.group.UpdateGroup;
+import com.xiaoyingkeji.comm.valid.group.AddGroup;
+import com.xiaoyingkeji.comm.valid.group.UpdateGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

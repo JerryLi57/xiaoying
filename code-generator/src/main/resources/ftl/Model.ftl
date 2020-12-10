@@ -1,4 +1,4 @@
-package com.lolaage.crm.${ModuleName}.model;
+package com.xiaoyingkeji.${ModuleName}.pojo.model;
 
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableId;

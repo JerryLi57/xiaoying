@@ -1,14 +1,14 @@
 package com.lolaage.codegenerator;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.setting.dialect.Props;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 /**
  * @description: 自动代码生成器
@@ -21,6 +21,13 @@ public class CodeGenerator {
 
     static Logger log = LoggerFactory.getLogger(CodeGenerator.class);
 
+    static String[] filterFields = {"f_isdeleted", "f_update_time", "f_create_time"};
+
+    public static boolean filterForVo(String field) {
+        List<String> list = Arrays.asList(filterFields);
+        return list.contains(field);
+    }
+
     public static String getPropValue(String key) {
         Props prop = new Props("generator.properties");
         return prop.getStr(key);
@@ -28,7 +35,6 @@ public class CodeGenerator {
 
     /**
      * 构造表模型实体类
-     *
      * @param val
      */
     static void buildModel(TemplateVal val) {
@@ -43,13 +49,12 @@ public class CodeGenerator {
         root.put("fields", tablesDto);
         root.put("serialVersionUID", System.currentTimeMillis() + "L");
 
-        freemarkerUtil.fprint("Model.ftl", root, val.getModelName() + ".java", "model");
+        freemarkerUtil.fprint("Model.ftl", root, val.getModelName() + ".java", "pojo/model");
     }
 
 
     /**
      * Dto构造
-     *
      * @param val
      */
     static void buildDetailDto(TemplateVal val) {
@@ -61,11 +66,14 @@ public class CodeGenerator {
         root.put("crateDate", val.getCrateDate());
         root.put("tableName", val.getTableName());
         TablesDto tablesDto = val.getTablesDto();
-        FiledsDto ff = tablesDto.getFields().get(1);
-        root.put("fields", tablesDto);
+        TablesDto tablesDto2 = new TablesDto();
+        BeanUtil.copyProperties(tablesDto, tablesDto2);
+        List<FiledsDto> fields = tablesDto.getFields().stream().filter(e -> (!filterForVo(e.getFieldName()))).collect(Collectors.toList());
+        tablesDto2.setFields(fields);
+        root.put("fields", tablesDto2);
         root.put("serialVersionUID", System.currentTimeMillis() + "L");
 
-        freemarkerUtil.fprint("DetailDto.ftl", root, val.getModelName() + "DetailDto.java", "dto/response");
+        freemarkerUtil.fprint("DetailVo.ftl", root, val.getModelName() + "DetailVo.java", "pojo/vo");
     }
 
     static void buildEditDto(TemplateVal val) {
@@ -77,11 +85,14 @@ public class CodeGenerator {
         root.put("crateDate", val.getCrateDate());
         root.put("tableName", val.getTableName());
         TablesDto tablesDto = val.getTablesDto();
-        FiledsDto ff = tablesDto.getFields().get(1);
-        root.put("fields", tablesDto);
+        TablesDto tablesDto2 = new TablesDto();
+        BeanUtil.copyProperties(tablesDto, tablesDto2);
+        List<FiledsDto> fields = tablesDto.getFields().stream().filter(e -> (!filterForVo(e.getFieldName()))).collect(Collectors.toList());
+        tablesDto2.setFields(fields);
+        root.put("fields", tablesDto2);
         root.put("serialVersionUID", System.currentTimeMillis() + "L");
 
-        freemarkerUtil.fprint("EditDto.ftl", root, val.getModelName() + "EditDto.java", "dto/request");
+        freemarkerUtil.fprint("EditDto.ftl", root, val.getModelName() + "EditDto.java", "pojo/dto");
     }
 
     static void buildQueryDto(TemplateVal val) {
@@ -93,11 +104,14 @@ public class CodeGenerator {
         root.put("crateDate", val.getCrateDate());
         root.put("tableName", val.getTableName());
         TablesDto tablesDto = val.getTablesDto();
-        FiledsDto ff = tablesDto.getFields().get(1);
-        root.put("fields", tablesDto);
+        TablesDto tablesDto2 = new TablesDto();
+        BeanUtil.copyProperties(tablesDto, tablesDto2);
+        List<FiledsDto> fields = tablesDto.getFields().stream().filter(e -> (!filterForVo(e.getFieldName()))).collect(Collectors.toList());
+        tablesDto2.setFields(fields);
+        root.put("fields", tablesDto2);
         root.put("serialVersionUID", System.currentTimeMillis() + "L");
 
-        freemarkerUtil.fprint("QueryDto.ftl", root, val.getModelName() + "QueryDto.java", "dto/request");
+        freemarkerUtil.fprint("QueryDto.ftl", root, val.getModelName() + "QueryDto.java", "pojo/dto");
     }
 
     static void buildListDto(TemplateVal val) {
@@ -113,12 +127,11 @@ public class CodeGenerator {
         root.put("fields", tablesDto);
         root.put("serialVersionUID", System.currentTimeMillis() + "L");
 
-        freemarkerUtil.fprint("ListDto.ftl", root, val.getModelName() + "ListDto.java", "dto/response");
+        freemarkerUtil.fprint("ListVo.ftl", root, val.getModelName() + "ListVo.java", "pojo/vo");
     }
 
     /**
      * Mapper构造
-     *
      * @param val
      */
     static void buildMapper(TemplateVal val) {
@@ -134,13 +147,12 @@ public class CodeGenerator {
         root.put("fields", tablesDto);
         root.put("serialVersionUID", System.currentTimeMillis() + "L");
 
-        freemarkerUtil.fprint("Mapper.ftl", root, val.getModelName() + "Mapper.java", "mapper");
+        freemarkerUtil.fprint("Mapper.ftl", root, val.getModelName() + "Mapper.java", "dao/mapper");
     }
 
 
     /**
      * Mapper构造
-     *
      * @param val
      */
     static void buildMapperXml(TemplateVal val) {
@@ -164,7 +176,6 @@ public class CodeGenerator {
 
     /**
      * IService构造
-     *
      * @param val
      */
     static void buildIservice(TemplateVal val) {
@@ -185,7 +196,6 @@ public class CodeGenerator {
 
     /**
      * Service Impl构造
-     *
      * @param val
      */
     static void buildServiceImpl(TemplateVal val) {
@@ -206,7 +216,6 @@ public class CodeGenerator {
 
     /**
      * Controller构造
-     *
      * @param val
      */
     static void buildController(TemplateVal val) {
@@ -245,7 +254,6 @@ public class CodeGenerator {
 
     /**
      * Controller构造
-     *
      * @param val
      */
     static void buildFeign(TemplateVal val) {
@@ -296,7 +304,7 @@ public class CodeGenerator {
             buildServiceImpl(val);
             buildController(val);
             buildControllerTest(val);
-            buildFeign(val);
+//            buildFeign(val);
         }
     }
 

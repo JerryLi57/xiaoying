@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lolaage.crm.${ModuleName}.dao.mapper.${ModelName}Mapper">
+<mapper namespace="com.xiaoyingkeji.${ModuleName}.dao.mapper.${ModelName}Mapper">
 
     <!-- 通用查询结果列 -->
     <sql id="baseColumnList">
@@ -10,7 +10,7 @@
     </sql>
 
     <!-- 使用对象类型传参 -->
-    <select id="listPageByDto" parameterType="com.lolaage.crm.${ModuleName}.dto.request.${ModelName}QueryDto" resultType="com.lolaage.crm.${ModuleName}.dto.response.${ModelName}ListDto">
+    <select id="listPageByDto" parameterType="com.xiaoyingkeji.${ModuleName}.pojo.dto.${ModelName}QueryDto" resultType="com.xiaoyingkeji.${ModuleName}.pojo.vo.${ModelName}ListVo">
         SELECT <include refid="baseColumnList" /> FROM ${tableName} t where t.f_isdeleted=0
         <if test="dto != null">
             <!-- 这里写自己的条件拼装 -->

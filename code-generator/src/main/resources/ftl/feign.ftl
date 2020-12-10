@@ -1,6 +1,6 @@
-package com.lolaage.crm.gateway.feign.${ModuleName};
+package com.xiaoyingkeji.gateway.feign.${ModuleName};
 
-import com.lolaage.crm.${ModuleName}.dto.${ModelName}Dto;
+import com.xiaoyingkeji.${ModuleName}.dto.${ModelName}Dto;
 import com.lolaage.utils.page.DataResult;
 import com.lolaage.utils.page.PageDto;
 import org.springframework.cloud.openfeign.FeignClient;

@@ -1,13 +1,14 @@
-package com.lolaage.crm.${ModuleName}.controller;
+package com.xiaoyingkeji.${ModuleName}.controller;
 
-import com.lolaage.crm.${ModuleName}.dto.request.${ModelName}EditDto;
-import com.lolaage.crm.${ModuleName}.dto.request.${ModelName}QueryDto;
-import com.lolaage.crm.${ModuleName}.dto.response.${ModelName}DetailDto;
-import com.lolaage.crm.${ModuleName}.dto.response.${ModelName}ListDto;
-import com.lolaage.crm.${ModuleName}.service.I${ModelName}Service;
-import com.lolaage.crm.service.dto.DataResult;
-import com.lolaage.crm.service.valid.group.AddGroup;
-import com.lolaage.crm.service.valid.group.UpdateGroup;
+import com.xiaoyingkeji.comm.controller.BaseController;
+import com.xiaoyingkeji.comm.pojo.DataResult;
+import com.xiaoyingkeji.comm.valid.group.AddGroup;
+import com.xiaoyingkeji.comm.valid.group.UpdateGroup;
+import com.xiaoyingkeji.${ModuleName}.pojo.dto.${ModelName}EditDto;
+import com.xiaoyingkeji.${ModuleName}.pojo.dto.${ModelName}QueryDto;
+import com.xiaoyingkeji.${ModuleName}.pojo.vo.${ModelName}DetailVo;
+import com.xiaoyingkeji.${ModuleName}.pojo.vo.${ModelName}ListVo;
+import com.xiaoyingkeji.${ModuleName}.service.I${ModelName}Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -34,7 +35,7 @@ public class ${ModelName}Controller extends BaseController {
 
     @GetMapping(value = "/list")
     @ApiOperation(value = "分页查询${tableComment}列表信息 author:${author}", notes = "分页查询${tableComment}列表信息")
-    public DataResult<List<${ModelName}ListDto>> listByPage(${ModelName}QueryDto queryDto) {
+    public DataResult<List<${ModelName}ListVo>> listByPage(${ModelName}QueryDto queryDto) {
         return resultDataPagePackage(() -> ${ModelNameLower}Service.listPageByDto(queryDto));
     }
 
@@ -55,7 +56,7 @@ public class ${ModelName}Controller extends BaseController {
     @ApiImplicitParams(
             @ApiImplicitParam(name = "id", value = "应急救援设备信息Id", dataType = "Long", required = true)
     )
-    public DataResult<${ModelName}DetailDto> getDetail(@RequestParam(name = "id") Long id) {
+    public DataResult<${ModelName}DetailVo> getDetail(@RequestParam(name = "id") Long id) {
         return resultDataCommon(() -> ${ModelNameLower}Service.getDetail(id));
     }
 

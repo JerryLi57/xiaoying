@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaoyingkeji.file.dao.mapper.FileMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="baseColumnList">
+        t.f_id AS id,
+        t.f_name AS name,
+        t.f_md5 AS md5,
+        t.f_path AS path,
+        t.f_update_time AS updateTime,
+        t.f_create_time AS createTime,
+        t.f_isdeleted AS isdeleted
+    </sql>
+
+    <!-- 使用对象类型传参 -->
+    <select id="listPageByDto" parameterType="com.xiaoyingkeji.file.pojo.dto.FileQueryDto" resultType="com.xiaoyingkeji.file.pojo.vo.FileListVo">
+        SELECT <include refid="baseColumnList" /> FROM t_file t where t.f_isdeleted=0
+        <if test="dto != null">
+            <!-- 这里写自己的条件拼装 -->
+
+        </if>
+        ORDER BY t.f_update_time DESC
+    </select>
+
+</mapper>
